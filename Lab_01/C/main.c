@@ -5,7 +5,7 @@
 
 int main()
 {
-	printf("Beggining Testing of Question 1 and Question 2: {1, 2, 3, 2, 1} and {10, 9, 1, 2, 8, 4, 3, 2, 0, -10} \n {");
+	printf("Beginning Testing of Question 1 and Question 2: {1, 2, 3, 2, 1} and {10, 9, 1, 2, 8, 4, 3, 2, 0, -10} \n {");
 	printf("Expected output: {1, 1, 2, 2, 3} and {-10, 0, 1, 2, 2, 3, 4, 8, 9, 10} \n");
 	int array1[] = {10, 9, 1, 2, 8, 4, 3, 2, 0, -10};
 	int array[] = {1, 2, 3, 2, 1};
@@ -23,13 +23,13 @@ int main()
 	for(int i = 0; i < sizeof(array1)/sizeof(int); i++)
 		printf("%d, ", array1[i]);
 	printf("NULL}\n");
-	
+	free(new_array);
 	int numbers_merge[500]; int numbers_insert[500];
 	for (int i = 0; i < 500; i++) {
 		numbers_insert[i] = rand();
 		numbers_merge[i] = numbers_insert[i];
 	}
-	printf("Now begining Question 3: time complexity testing:\n");
+	printf("Now beginning Question 3: time complexity testing:\n");
 	clock_t start = clock();
 	merge_sort(numbers_merge, 500);
 	clock_t end = clock();
