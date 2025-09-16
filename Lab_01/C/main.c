@@ -23,24 +23,25 @@ int main(){
 		printf("%d, ", array1[i]);
 	printf("NULL}\n");
 	free(new_array);
-	int numbers_merge[500]; int numbers_insert[500];
-	for (int i = 0; i < 500; i++) {
+	int numbers_merge[5000]; int numbers_insert[5000];
+	for (int i = 0; i < 5000; i++) {
 		numbers_insert[i] = rand();
 		numbers_merge[i] = numbers_insert[i];
 	}
 	printf("Now beginning Question 3: time complexity testing:\n");
 	clock_t start = clock();
-	merge_sort(numbers_merge, 500);
+	merge_sort(numbers_merge, 5000);
 	clock_t end = clock();
 	double merge_time = (double)(end - start) / CLOCKS_PER_SEC;
 	start = clock();
-	insertion_sort_bad(numbers_insert, 500);
+	new_array = insertion_sort_bad(numbers_insert, 5000);
 	end = clock();
+	free(new_array);
 	double insert_bad_time = (double)(end - start) / CLOCKS_PER_SEC;
 	start = clock();
-	insertion_sort(numbers_insert, 500);
+	insertion_sort(numbers_insert, 5000);
 	end = clock();
 	double insert_time = (double)(end - start) / CLOCKS_PER_SEC;
-	printf("\tInsertion method 1 time: %f \n\tInsertion method 2 time: %f \n\tMerge time: %f ", insert_time, insert_bad_time, merge_time);
+	printf("\tInsertion method 1 time: %f \n\tInsertion method 2 time: %f \n\tMerge time: %f \n", insert_time, insert_bad_time, merge_time);
 	return 0;
 }
