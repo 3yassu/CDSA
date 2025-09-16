@@ -3,8 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-int main()
-{
+int main(){
 	printf("Beginning Testing of Question 1 and Question 2: {1, 2, 3, 2, 1} and {10, 9, 1, 2, 8, 4, 3, 2, 0, -10} \n {");
 	printf("Expected output: {1, 1, 2, 2, 3} and {-10, 0, 1, 2, 2, 3, 4, 8, 9, 10} \n");
 	int array1[] = {10, 9, 1, 2, 8, 4, 3, 2, 0, -10};
