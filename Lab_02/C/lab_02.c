@@ -27,13 +27,14 @@ int partition_bad(int *list, int low, int high){
 	new_list -= size;
 	for(int i = 0; i < high + 1; i++, new_list++, list++)
 		*list = *new_list;
+	free(new_list);
 	return low;
 }
 
 int partition(int *list, int low, int high){
 	for(int i = low; i < high; i++)
 		if(*(list + i) <= *(list + high)){
-			swap((list + i), (list + low));
+			mem_swap((list + i), (list + low));
 			low++;
 		}
 	mem_swap((list + high), (list + low));
