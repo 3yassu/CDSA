@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 void main(){
-	printf("Question 1(a/b): Partition function test over {8, 3, 6, 2, 7, 5, 1, 4}\n")
+	printf("Question 1(a/b): Partition function test over {8, 3, 6, 2, 7, 5, 1, 4}\n");
 	int array_a[] = {8, 3, 6, 2, 7, 5, 1, 4};
 	int array_b[] = {8, 3, 6, 2, 7, 5, 1, 4};
 	int index_a = partition_bad(array_a, 0, 7);

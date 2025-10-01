@@ -46,7 +46,7 @@ void merge(int *list_1, int *list_2, int size_1, int size_2){
 }
 
 void merge_sort(int *list, int size){
-	if(size == 1)
+	if(size <= 1)
 		return;
 	int middle = (size)/2;
 	int max = size%2 ? (middle + 1) : middle;
