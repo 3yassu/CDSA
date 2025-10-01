@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 int binary_search(int *arr, int size, int item){
 	int low = 0, high = size - 1;
 	while(low <= high){
@@ -18,24 +19,25 @@ int binary_search(int *arr, int size, int item){
 
 BST *BST_new(){
 	BST *tree = (BST*)malloc(sizeof(BST));
-	*tree = {NULL};
+	*tree = (BST){NULL};
 	return tree;
 }
 
-void BST_rec_insert(Node *cur, int item){
+Node *BST_rec_insert(Node *cur, int item){
 	if(cur == NULL){
 		cur = (Node*)malloc(sizeof(Node));
 		if(cur != NULL){
-			cur = (Node){item, NULL, NULL};
+			*cur = (Node){item, NULL, NULL};
+			return cur;
 		}else{
 			printf("No available memory for insert!");
 		}
-	}else{
-		if(item > cur->val)
-			return BST_rec_insert(cur->right, item);
-		else
-			return BST_rec_insert(cur->left, item)
 	}
+	if(item > cur->val)
+		cur->right = BST_rec_insert(cur->right, item);
+	else
+		cur->left = BST_rec_insert(cur->left, item);
+	return cur;
 }
 
 void BST_insert(BST *self, int item){
@@ -73,8 +75,23 @@ void BST_rec_drop(Node *cur){
 	free(cur);
 }
 
-void BST_drop(BST* self){
+void BST_drop(BST *self){
 	BST_rec_drop(self->root);
 	free(self);
+}
+
+void BST_rec_print(Node *cur){
+	if(cur == NULL)
+		return;
+	BST_rec_print(cur->left);
+	printf("%d, ", cur->val);
+	BST_rec_print(cur->right);
+}
+void BST_print(BST *self){
+	if(self == NULL)
+		return;
+	printf("{");
+	BST_rec_print(self->root);
+	printf("NULL}\n");
 }
 

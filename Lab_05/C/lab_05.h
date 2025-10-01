@@ -5,7 +5,7 @@
 typedef struct binary_node{
 	int val;
 	struct binary_node *left;
-	struct binary_node *right
+	struct binary_node *right;
 }Node;
 
 typedef struct BST{
