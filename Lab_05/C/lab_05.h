@@ -18,7 +18,7 @@ BST *BST_new();
 void BST_insert(BST *self, item);
 void BST_search(BST *self, item);
 void BST_drop(BST *self);
-//pre, post, whateverwhateverwhatever
+void BST_print(BST *self);
 
 
 #endif
