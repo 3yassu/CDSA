@@ -15,4 +15,4 @@ lab6.o: lab6.c lab6.h
 
 clean:
 	rm -rf *.o
-	rm -rf lab01
+	rm -rf lab6

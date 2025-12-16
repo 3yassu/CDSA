@@ -2,6 +2,33 @@
 #include <stdlib.h>
 #include "lab6.h"
 
+typedef struct Node Node;
+Node *node_init(val entry);
+
+
+struct Node { //int cuz I don't wanna do type generics #define node(type)whatevr
+	val entry;
+	struct Node *next;
+};
+
+struct LinkedList{
+	size_t len;
+	Node *front;
+};
+
+struct HashTable {
+	size_t len;
+	size_t cap;
+	LinkedList *buckets;
+};
+
+struct HashSet {
+	size_t len;
+	size_t cap;
+	size_t r; //what the hell
+	val *arr;
+};
+
 Node *node_init(val entry){
 	Node *ptr = (Node *)malloc(sizeof(Node));
 	if(ptr == NULL){

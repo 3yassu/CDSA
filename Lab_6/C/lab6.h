@@ -3,36 +3,17 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-typedef struct val{
+typedef struct val val;
+typedef struct LinkedList LinkedList;
+typedef struct HashTable HashTable;
+typedef struct HashSet HashSet;
+
+struct val{
 	int key;
 	int value; //</3
 	bool valid; // double </3
-} val;
+};
 
-typedef struct Node { //int cuz I don't wanna do type generics #define node(type)whatevr
-	val entry;
-	struct Node *next;
-} Node;
-
-typedef struct LinkedList{
-	size_t len;
-	Node *front;
-} LinkedList;
-
-typedef struct HashTable {
-	size_t len;
-	size_t cap;
-	LinkedList *buckets;
-} HashTable;
-
-typedef struct HashSet {
-	size_t len;
-	size_t cap;
-	size_t r; //what the hell
-	val *arr;
-} HashSet;
-
-Node *node_init(val entry);
 LinkedList *list_init();
 void list_push(LinkedList *self, val entry);
 val list_search(LinkedList *self, int key);
