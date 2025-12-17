@@ -1,28 +1,23 @@
 #include <stdio.h>
-#include "lab7.h"
-
+#include "kruskal_graph.h"
+//#include "prim_graph.h"
 int main(){
-	printf("Building Graph...\n");
-	Graph *ugraph = graph_init(false);
-	char uedges[7][2] = {{'A', 'B'}, {'A', 'C'}, {'A', 'D'}, {'B', 'E'}, {'D', 'F'}, {'E', 'C'}, {'F','C'}};
-	for(int i = 0; i < 7; i++){
-		int err = add_edge(ugraph, uedges[i][0], uedges[i][1]);
+	printf("Building Graphs...\n");
+	KGraph *kgraph = kg_init(7);
+	char kedges[12][2] = {{'A', 'B'}, {'A', 'D'}, {'A', 'F'}, {'B', 'D'}, {'B', 'E'}, {'B', 'C'}, {'B', 'G'}, {'C', 'E'}, {'C', 'G'}, {'D', 'E'}, {'F', 'G'}, {'F', 'B'}};
+	size_t kweights[12] = {2, 4, 5, 1, 3, 7, 4, 10, 6, 2, 1, 8};
+	for(int i = 0; i < 12; i++){
+		int err = kg_add_edge(kgraph, kedges[i][0], kedges[i][1], kweights[i]);
 		if(err){
-			graph_uninit(ugraph);
+			kg_drop(kgraph);
 			printf("Failure: %d \n", err);
 			return 100;
 		}
 	}
-	graph_print(ugraph);
-	printf("Test 1: BFS\n\\- Starting Node: 'A'\n"); //do this tmr but it's supposed to return val not freaking CArray dumbass
-	val *ubfs = bfs(ugraph, 'A');
-	printf("\t");
-	val_print(ubfs);
-	val_uninit(ubfs);
-	printf("Test 2: DFS\n\\- Starting Node: 'A'\n");
-	val *udfs = dfs(ugraph, 'A');
-	printf("\t");
-	val_print(udfs);
-	val_uninit(udfs);
-	graph_uninit(ugraph);
+	printf("Test Case 1: Kruskal MST\n");
+	KrusTuple mst = kruskal_mst(kgraph);
+	k_print(mst);
+	l_drop(mst.list);
+	kg_drop(kgraph);
+	printf("Test Case 2: Prim MST\n");
 }

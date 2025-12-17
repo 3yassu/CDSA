@@ -1,18 +1,24 @@
 CC = gcc
-CFLAGS = -Wall -g
-lab7: main.o lab7.o
-	$(CC) $(CFLAGS) main.o lab7.o -o lab7
+CFLAGS = -Wall -Wextra -g
+lab8: main.o union_find.o uf_dict.o kruskal_graph.o
+	$(CC) $(CFLAGS) main.o union_find.o uf_dict.o kruskal_graph.o -o lab8
 
-prog: main.o lab7.o
-	$(CC) $(CFLAGS) main.o lab7.o -o lab7
+prog: main.o union_find.o uf_dict.o kruskal_graph.o
+	$(CC) $(CFLAGS) main.o union_find.o uf_dict.o kruskal_graph.o -o lab8
 	rm -rf *.o
 
-main.o: main.c lab7.h
+main.o: main.c kruskal_graph.h
 	$(CC) $(CFLAGS) -c main.c
 
-lab6.o: lab7.c lab7.h
-	$(CC) $(CFLAGS) -c lab7.c
+kruskal_graph.o: kruskal_graph.c kruskal_graph.h union_find.h
+	$(CC) $(CFLAGS) -c kruskal_graph.c
+
+union_find.o: union_find.c union_find.h uf_dict.h
+	$(CC) $(CFLAGS) -c union_find.c
+
+uf_dict.o: uf_dict.c uf_dict.h
+	$(CC) $(CFLAGS) -c uf_dict.c
 
 clean:
 	rm -rf *.o
-	rm -rf lab7
+	rm -rf lab8
