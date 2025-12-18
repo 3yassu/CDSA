@@ -1,19 +1,16 @@
-#include "dict.h"
+#include "p_dict.h"
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdio.h>
 #define new(T) (T *)malloc(sizeof(T));
 #define FNV_OFFSET 14695981039346656037UL 
 #define FNV_PRIME 1099511628211UL
 #define list_for_each(head) for(;head != NULL; head = head->next)
 
 typedef struct Node Node;
-typedef struct inner_val{
-	char value;
-	size_t weight;
-}inner_val;
 typedef struct item{
 	char key;
-	inner_val value;
+	AdjList *value;
 }item;
 struct Node{
 	item entry;
@@ -28,38 +25,29 @@ struct Dict {
 	List *buckets;
 };
 
-Node *node_init(item entry);
-List *list_init();
-int list_push(List *self, item value);
-void list_push_node(List *self, Node *node);
-void list_drop(List *self);
-char list_get(List *self, char key);
-void list_set(List *self, char key, char val, char weight);
-void list_uninit_inner(List *self);
-size_t hash(char id);
+static Node *node_init(item entry);
+static int list_push(List *self, item value);
+static void list_push_node(List *self, Node *node);
+static AdjList *list_get(List *self, char key);
+static void list_add(List *self, char key, char val, size_t weight);
+static void list_uninit_inner(List *self);
+static size_t hash(char id);
 
-size_t hash(char id){
+static size_t hash(char id){
 	uint64_t hash_val = FNV_OFFSET;
 	hash_val ^= (uint64_t)(unsigned char)(id);
 	hash_val *= FNV_PRIME;
 	return (size_t)(hash_val);
 }
 
-Node *node_init(item entry){
+static Node *node_init(item entry){
 	Node *ptr = new(Node);
 	if(ptr == NULL)
 		return NULL;
 	*ptr = (Node){.entry = entry, .next = NULL};
 	return ptr;
 }
-List *list_init(){
-	List *ptr = new(List);
-	if(ptr == NULL)
-		return NULL;
-	*ptr = (List){.head = NULL};
-	return ptr;
-}
-int list_push(List *self, item entry){
+static int list_push(List *self, item entry){
 	if(self == NULL)
 		return 2;
 	Node **cur = &self->head;
@@ -70,7 +58,7 @@ int list_push(List *self, item entry){
 		return 1;
 	return 0;
 }
-void list_push_node(List *self, Node *node){
+static void list_push_node(List *self, Node *node){
 	if(self == NULL)
 		return;
 	Node **cur = &self->head;
@@ -78,24 +66,32 @@ void list_push_node(List *self, Node *node){
 		cur = &(*cur)->next;
 	*cur = node;
 }
-char list_get(List *self, char key){
+static AdjList *list_get(List *self, char key){
 	if(self == NULL)
 		return 0;
 	Node *cur = self->head;
-	for(;cur != NULL; cur = cur->next)
+	list_for_each(cur)
 		if(cur->entry.key == key)
 			return cur->entry.value;
 	return 0;
 }
-bool list_in(List *self, char key){
+static bool list_in(List *self, char key){
 	if(self == NULL)
 		return false;
-	for(;cur != NULL; cur = cur->next)
+	Node *cur = self->head;
+	list_for_each(cur)
 		if(cur->entry.key == key)
 			return true;
 	return false;	
 }
-
+static void list_add(List *self, char key, char val, size_t weight){
+	if(self == NULL)
+		return;
+	Node *cur = self->head;
+	list_for_each(cur)
+		if(cur->entry.key == key)
+			l_append(cur->entry.value, 0, val, weight);
+}
 Dict *dict_init(){
 	Dict *ptr = new(Dict);
 	if(ptr == NULL)
@@ -103,18 +99,15 @@ Dict *dict_init(){
 	*ptr = (Dict){.len = 0, .cap = 0, .buckets = NULL};
 	return ptr;
 }
-
-int dict_add(Dict *self, char key, char val, size_t weight){
-	if(self == NULL)
-		return 2;
-	if(self->buckets == NULL){
-		self->buckets = list_init();
+int dict_grow(Dict *self){
+	if(self->cap == 0){
+		self->buckets = (List *)calloc(self->cap=1, sizeof(List));
 		if(self->buckets == NULL)
 			return 1;
-		self->cap = 1;
-	}
-	else if(self->len >= self->cap/2){
+	}else{
 		List *list_ptr = (List *)calloc(self->cap*2, sizeof(List));
+		if(list_ptr == NULL)
+			return 1;
 		List *old_ptr = self->buckets;
 		self->buckets = list_ptr;
 		for(size_t i = 0; i < self->cap; i++){
@@ -130,11 +123,25 @@ int dict_add(Dict *self, char key, char val, size_t weight){
 		}
 		self->cap *= 2;
 		free(old_ptr);
-	} 
+	}
+	return 0;
+}
+int dict_init_key(Dict *self, char key){
+	if(self == NULL)
+		return 2;
+	if(self->len == self->cap)
+		if(dict_grow(self))
+			return 1;
 	size_t hash_o = hash(key)%self->cap;
-	list_push(self->buckets + hash_o, (item){.key = key, .value = (inner_val){.value = val, .weight = weight}});
+	list_push(self->buckets + hash_o, (item){.key = key, .value = l_init()});
 	self->len++;
 	return 0;
+}
+void dict_add(Dict *self, char key, char val, size_t weight){
+	if(self == NULL)
+		return;
+	size_t hash_o = hash(key)%self->cap;
+	list_add(self->buckets + hash_o, key, val, weight);
 }
 void dict_drop(Dict *self){
 	if(self == NULL)
@@ -145,7 +152,7 @@ void dict_drop(Dict *self){
 	free(self->buckets);
 	free(self);
 }
-char dict_get(Dict *self, char key){
+AdjList *dict_get(Dict *self, char key){
 	if(self == NULL)
 		return 0;
 	return list_get(self->buckets + hash(key)%self->cap, key);
@@ -161,6 +168,7 @@ void list_uninit_inner(List *self){
 	Node *cur = self->head;
 	while(cur != NULL){
 		Node *next = cur->next;
+		l_drop(cur->entry.value);
 		free(cur);
 		cur = next;
 	}
