@@ -2,6 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+struct Node{
+	int val;
+	struct binary_node *left;
+	struct binary_node *right;
+};
 
 int binary_search(int *arr, int size, int item){
 	int low = 0, high = size - 1;

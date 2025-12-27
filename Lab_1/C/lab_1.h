@@ -1,6 +1,6 @@
 //lab_01.h
-#ifndef LAB01
-#define LAB01
+#ifndef LAB1
+#define LAB1
 
 void merge_sort(int *list, int size);
 void insertion_sort(int *list, int size);

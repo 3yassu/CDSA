@@ -3,10 +3,6 @@
 #include <stddef.h>
 #include "list.h"
 typedef struct KGraph KGraph;
-typedef struct AdjTuple {
-	AdjList *list;
-	size_t weight;
-}AdjTuple;
 
 KGraph *kg_init(size_t vertices);
 int kg_add_edge(KGraph *self, char u, char v, size_t w);

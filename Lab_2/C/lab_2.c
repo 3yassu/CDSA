@@ -1,3 +1,4 @@
+#include "lab_2.h"
 #include <stdlib.h>
 
 
@@ -10,23 +11,21 @@ void mem_swap(int *one, int *two){
 int partition_bad(int *list, int low, int high){
 	int size = high + 1 - low;
 	int *new_list = (int*)malloc(sizeof(int)*size);
-	for(int i = 0; i < high; i++){
-		 if(*(list + i) <= *(list + high)){
-			*new_list = *(list + i);
-			low++; new_list++;
-		}
-	}
-	*new_list = *(list + high);
-	new_list++;
-	for(int i = 0; i < high; i++){
-		if(*(list + i) > *(list + high)){
-			*new_list = *(list + i);
+	for(int i = low; i < high; i++)
+		 if(list[i] <= list[high]){
+			*new_list = list[i];
 			new_list++;
 		}
-	}
+	*new_list = list[high];
+	new_list++;
+	for(int i = low; i < high; i++)
+		if(list[i] > list[high]){
+			*new_list = list[i];
+			new_list++;
+		}
 	new_list -= size;
-	for(int i = 0; i < high + 1; i++, new_list++, list++)
-		*list = *new_list;
+	for(int i = low; i < high + 1; i++)
+		list[i] = new_list[i-low];
 	free(new_list);
 	return low;
 }

@@ -7,7 +7,7 @@ typedef struct binary_node{
 	struct binary_node *left;
 	struct binary_node *right;
 }Node;
-
+typedef struct Node Node;
 typedef struct BST{
 	Node *root;
 }BST;

@@ -1,4 +1,4 @@
-#include "lab_01.h"
+#include "lab_1.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

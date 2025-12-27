@@ -1,5 +1,5 @@
 //lab_01.c
-#include "lab_01.h"
+#include "lab_1.h"
 #include <stdlib.h>
 
 
