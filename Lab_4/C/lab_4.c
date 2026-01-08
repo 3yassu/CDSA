@@ -11,9 +11,9 @@ void downheap(int *arr, int size, int index){
 	int l_ind = index * 2 + 1;
 	int r_ind = index * 2 + 2;
 	int largest = index;
-	if(l_ind < size && arr[l_ind] > arr[index])
+	if(l_ind < size && arr[l_ind] > arr[largest])
 		largest = l_ind;
-	if(r_ind < size && arr[r_ind] > arr[index])
+	if(r_ind < size && arr[r_ind] > arr[largest])
 		largest = r_ind;
 	if(largest != index){
 		mem_swap((arr+largest), (arr+index));
@@ -42,9 +42,9 @@ void downheap_min(int *arr, int size, int index){
 	int l_ind = index * 2 + 1;
 	int r_ind = index * 2 + 2;
 	int smallest = index;
-	if(l_ind < size && arr[l_ind] < arr[index])
+	if(l_ind < size && arr[l_ind] < arr[smallest])
 		smallest = l_ind;
-	if(r_ind < size && arr[r_ind] < arr[index])
+	if(r_ind < size && arr[r_ind] < arr[smallest])
 		smallest = r_ind;
 	if(smallest != index){
 		mem_swap((arr+smallest), (arr+index));

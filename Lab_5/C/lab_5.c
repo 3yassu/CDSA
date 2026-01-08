@@ -1,4 +1,4 @@
-#include "lab_05.h"
+#include "lab_5.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -22,10 +22,41 @@ int binary_search(int *arr, int size, int item){
 	return -1;
 }
 
+int first_or_greater(int *arr, int size, int item){
+	int low = 0, high = size - 1, mid = low + (high - low) / 2;
+	if(item > arr[high])
+		return -1;
+	while(low < high){
+		if(arr[mid] < item)
+			low = mid + 1;
+		else
+			high = mid;
+		mid = low + (high-low)/2;
+	}
+	return mid;
+}
+
+
 BST *BST_new(){
 	BST *tree = (BST*)malloc(sizeof(BST));
 	*tree = (BST){NULL};
 	return tree;
+}
+
+int BST_rec_is_valid(Node *cur){
+	if(!cur)
+		return 1;
+	if(cur->left && cur->left->val >= cur->val)
+		return 0;
+	if(cur->right && cur->right->val <= cur->val)
+		return 0;
+	return BST_rec_is_valid(cur->left) && BST_rec_is_valid(cur->right);
+}
+
+int BST_is_valid(BST *self){
+	if(!self)
+		return 0;
+	return BST_rec_is_valid(self->root);
 }
 
 Node *BST_rec_insert(Node *cur, int item){
@@ -40,8 +71,10 @@ Node *BST_rec_insert(Node *cur, int item){
 	}
 	if(item > cur->val)
 		cur->right = BST_rec_insert(cur->right, item);
-	else
+	else if( item < cur->val)
 		cur->left = BST_rec_insert(cur->left, item);
+	else
+		printf("SOFT_ERROR: Tried to insert copy in BST!\n");
 	return cur;
 }
 
@@ -69,7 +102,7 @@ int BST_rec_search(Node *cur, int item){
 }
 
 int BST_search(BST *self, int item){
-	BST_rec_search(self->root, item);
+	return BST_rec_search(self->root, item);
 }
 
 void BST_rec_drop(Node *cur){
@@ -85,18 +118,23 @@ void BST_drop(BST *self){
 	free(self);
 }
 
-void BST_rec_print(Node *cur){
+void BST_rec_print(Node *cur, Order order){
 	if(cur == NULL)
 		return;
-	BST_rec_print(cur->left);
-	printf("%d, ", cur->val);
-	BST_rec_print(cur->right);
+	if(order == PRE)
+		printf("%d, ", cur->val);
+	BST_rec_print(cur->left, order);
+	if(order == IN)
+		printf("%d, ", cur->val);
+	BST_rec_print(cur->right, order);
+	if(order == POST)
+		printf("%d, ", cur->val);
 }
-void BST_print(BST *self){
+void BST_print(BST *self, Order order){
 	if(self == NULL)
 		return;
 	printf("{");
-	BST_rec_print(self->root);
+	BST_rec_print(self->root, order);
 	printf("NULL}\n");
 }
 

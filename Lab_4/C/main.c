@@ -12,7 +12,7 @@ int main(){
 	for(int i = 0; i < sizeof(arr_max)/sizeof(int); i++)
 		printf("%d, ", arr_max[i]);
 	printf("NULL]\n");
-	build_max_heap(arr_min, sizeof(arr_min)/sizeof(int));
+	build_min_heap(arr_min, sizeof(arr_min)/sizeof(int));
 	printf("\t Min Heap: [");
 	for(int i = 0; i < sizeof(arr_min)/sizeof(int); i++)
 		printf("%d, ", arr_min[i]);
